@@ -1,0 +1,13 @@
+pyproject.toml
+fifa_world_cup.egg-info/PKG-INFO
+fifa_world_cup.egg-info/SOURCES.txt
+fifa_world_cup.egg-info/dependency_links.txt
+fifa_world_cup.egg-info/requires.txt
+fifa_world_cup.egg-info/top_level.txt
+src/__init__.py
+src/bronze/__init__.py
+src/bronze/extraction.py
+src/data/raw/__init__.py
+src/data/raw/data_extractor.py
+src/silver/transacional/__init__.py
+src/silver/transacional/shootoutTransacional.py

@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: fifa-world-cup
+Version: 0.1.0
+Summary: FIFA World Cup Data Pipeline
+Author: Seu Nome
+Requires-Dist: pandas
+Requires-Dist: pyspark
+Requires-Dist: python-dotenv

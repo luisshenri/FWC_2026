@@ -1,2 +1,11 @@
-/.venv
-/.env
+*.env
+*.key
+*.pem
+*.crt
+*.secret
+*.sqlite3
+*.db
+.DS_Store
+__pycache__/
+*.pyc
+.env.*
