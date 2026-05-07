@@ -1,9 +1,7 @@
 import pandas as pd
 
 class Extraction:
-    def __init__(self):
-        pass
-
+    
     def extract(self, input_data: str):
         df = pd.read_csv(input_data)
         return df

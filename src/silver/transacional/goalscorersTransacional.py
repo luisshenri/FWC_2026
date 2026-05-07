@@ -1,12 +1,11 @@
 import pandas as pd
 from src.bronze.extraction import Extraction
+import os
 
 class goalscorersTransacional(Extraction):
-    def __init__(self):
-        pass
 
     def process_data(self, input_data: str):
-        df = pd.read_csv(input_data)
+        df = self.extract(input_data)
         return df
     
     def alter_columns_names(self, processed_data):
@@ -33,13 +32,26 @@ class goalscorersTransacional(Extraction):
         processed_data["gol_penalti"] = processed_data["gol_penalti"].astype(bool)
         return processed_data
     
+    def save_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        output_dir = "src/data/silver/transacional"
+        output_path = os.path.join(output_dir, "goalscorers.parquet")
+        os.makedirs(output_dir, exist_ok=True)
+        df.to_parquet(output_path, index=False)
+        print(f"Dados salvos em {output_path}")
+        return df
+
+    def run_pipeline(self, input_data: str):
+        processed_data = self.process_data(input_data)
+        processed_data = self.alter_columns_names(processed_data)
+        processed_data = self.alter_types(processed_data)
+        self.save_data(processed_data)
+        return processed_data
+
 if __name__ == "__main__":
     goalscorers_transacional = goalscorersTransacional()
-    processed_data = goalscorers_transacional.process_data("src/data/raw/goalscorers.csv")
-    processed_data = goalscorers_transacional.alter_columns_names(processed_data)
-    processed_data = goalscorers_transacional.alter_types(processed_data)
+    processed_data = goalscorers_transacional.run_pipeline("src/data/raw/goalscorers.csv")
     print("================ Dados Processados =================")
-    print(processed_data.head())
+    print(processed_data.tail())
     print("")
     print("================ Tipos de Dados =================")
     print(processed_data.dtypes)

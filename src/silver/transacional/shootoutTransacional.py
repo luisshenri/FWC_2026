@@ -1,8 +1,8 @@
 from src.bronze.extraction import Extraction
 import pandas as pd
+import os
 class ShootoutTransacional(Extraction):
-    def __init__(self):
-        pass
+    
 
     def process_data(self, input_data: str):
         df = self.extract(input_data)
@@ -30,13 +30,24 @@ class ShootoutTransacional(Extraction):
         processed_data["primeiro_batedor"] = processed_data["primeiro_batedor"].fillna("NULL")
         return processed_data
 
+    def save_data(self, df: pd.DataFrame) -> pd.DataFrame:
+        output_dir = "src/data/silver/transacional"
+        output_path = os.path.join(output_dir, "shootouts.parquet")
+        os.makedirs(output_dir, exist_ok=True)
+        df.to_parquet(output_path, index=False)
+        print(f"Dados salvos em {output_path}")
+        return df
 
+    def run_pipeline(self, input_data: str):
+        processed_data = self.process_data(input_data)
+        processed_data = self.alter_columns_names(processed_data)
+        processed_data = self.alter_types(processed_data)
+        processed_data = self.exchange_nans(processed_data)
+        self.save_data(processed_data)
+        return processed_data
 
 if __name__ == "__main__":
     shootout_transacional = ShootoutTransacional()
-    processed_data = shootout_transacional.process_data("src/data/raw/shootouts.csv")
-    processed_data = shootout_transacional.alter_columns_names(processed_data)
-    processed_data = shootout_transacional.alter_types(processed_data)
-    processed_data = shootout_transacional.exchange_nans(processed_data)
+    processed_data = shootout_transacional.run_pipeline("src/data/raw/shootouts.csv")
     print(processed_data.head())
     print(processed_data.dtypes)
